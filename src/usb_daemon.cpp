@@ -33,6 +33,14 @@ int TUSB_Daemon::DaemonFunction()
     return 0;
 }
 
+int LoadConfig(const char* filename)
+{
+	FILE* f=fopen(filename ,"r");
+	
+	fclose(f);
+	return 0;
+}
+
 TUSB_Daemon::~TUSB_Daemon()
 {
     delete web_thr;
