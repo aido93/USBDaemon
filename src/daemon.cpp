@@ -252,15 +252,6 @@ int TDaemon::ReloadConfig()
     return LoadConfig(CONFIG_FILE.c_str());
 }
 
-int TDaemon::LoadConfig(const char* Filename)
-
-{
-    FILE* f=fopen(Filename,"r");
-    
-    fclose(f);
-    return 0;
-}
-
 TDaemon::TDaemon(const char* ConfigName)
 
 {
