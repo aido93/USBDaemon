@@ -32,7 +32,7 @@ class TDaemon{
         int SetFdLimit(int MaxFd);
         int WorkProc();
         int ReloadConfig();
-        int LoadConfig(const char* Filename);
+        virtual int LoadConfig(const char* Filename) = 0;
         static void SelfDebug(int sig, siginfo_t *si, void *ptr);
 };
 
