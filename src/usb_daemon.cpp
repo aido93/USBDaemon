@@ -21,24 +21,41 @@
 #include "web_usb_manage.h"
 #include "usb_handler.hpp"
 #include "web_server.hpp"
+#include <libconfig.h++>
 
 int TUSB_Daemon::DaemonFunction()
-{
-	//This code runs in the second parent - WebServer
-    WriteLog("%s [DAEMON] I'm baby!\n", getTime());
-    
+{    
     //Run WebServer and USBHandler in threads
-    web_thr=new std::thread(Web_thrFunc,1,2500);//1 connection,2500 port
+    web_thr=new std::thread(Web_thrFunc,connects,port);//1 connection,2500 port
     usb_thr=new std::thread(Usb_thrFunc);
     return 0;
 }
 
-int LoadConfig(const char* filename)
+using namespace libconfig;
+
+int TUSB_Daemon::LoadConfig(const char* filename)
 {
-	FILE* f=fopen(filename ,"r");
-	
-	fclose(f);
-	return 0;
+    Config cfg;
+    try
+    {
+        cfg.readFile(filename);
+    }
+    catch(const FileIOException &fioex)
+    {
+        WriteLog("%s [DAEMON] I/O error while reading file %s.\n", getTime(),filename);
+        return(EXIT_FAILURE);
+    }
+    catch(const ParseException &pex)
+    {
+        WriteLog("%s [DAEMON] Parse error at %s : %d - %s\n", getTime(),pex.getFile(),pex.getLine(),pex.getError());
+        return(EXIT_FAILURE);
+    }
+    const Setting& root = cfg.getRoot();
+    const Setting& server = root["server"];
+    server.lookupValue("connections", connects);
+    server.lookupValue("port", port);
+    WriteLog("%s [DAEMON] Successed loading configuration\n", getTime());
+	return EXIT_SUCCESS;
 }
 
 TUSB_Daemon::~TUSB_Daemon()

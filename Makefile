@@ -19,7 +19,7 @@ proj:
 	cd src && $(MAKE) 
 	
 $(PROJ_NAME): proj
-	$(CXX) $(CXXFLAGS) $(OBJS) -lusb-1.0 -lpthread -o $@
+	$(CXX) $(CXXFLAGS) $(OBJS) -lusb-1.0 -lpthread -lconfig++ -o $@
 	
 clean:
 	rm -v src/CFunctions/*.o

@@ -97,7 +97,7 @@ void Web_thrFunc(const unsigned short int &conn, const unsigned short int &port)
 {
 	WriteLog("%s [WEB_SERVER] Started\n", getTime());
     TWebServer ws(conn,port);
-    WriteLog("%s [WEB_SERVER] Connection established\n", getTime());
+    WriteLog("%s [WEB_SERVER] Connection established on port %d\n", getTime(),port);
     while(1)
     {
         //Receive Message

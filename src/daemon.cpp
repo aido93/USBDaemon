@@ -69,8 +69,8 @@ void TDaemon::SetPidFile(const char* Filename)
     }
 }
 
-int TDaemon::MonitorProc()
 //следим за потомком
+int TDaemon::MonitorProc()
 {
     int      pid;
     int      status;
@@ -180,8 +180,8 @@ int TDaemon::MonitorProc()
     return status;
 }
 
-void TDaemon::SelfDebug(int sig, siginfo_t *si, void *ptr)
 //дебажим свои ошибки
+void TDaemon::SelfDebug(int sig, siginfo_t *si, void *ptr)
 {
     void* ErrorAddr;
     void* Trace[16];
@@ -229,8 +229,8 @@ void TDaemon::SelfDebug(int sig, siginfo_t *si, void *ptr)
     exit(CHILD_NEED_WORK);
 }
 
-int TDaemon::SetFdLimit(int MaxFd)
 //выставляем максимальное число открытых дескрипторов
+int TDaemon::SetFdLimit(int MaxFd)
 {
     struct rlimit lim;
     int          status;
@@ -247,13 +247,11 @@ int TDaemon::SetFdLimit(int MaxFd)
 }
 
 int TDaemon::ReloadConfig()
-
 {
     return LoadConfig(CONFIG_FILE.c_str());
 }
 
 TDaemon::TDaemon(const char* ConfigName)
-
 {
         // данный код уже выполняется в процессе потомка
         // разрешаем выставлять все биты прав на создаваемые файлы, 
@@ -262,8 +260,6 @@ TDaemon::TDaemon(const char* ConfigName)
         
         //Задаем путь к конфигу
         CONFIG_FILE=string(ETC_CONF_DIR)+ConfigName;
-        //загружаем конфиг
-        LoadConfig(CONFIG_FILE.c_str());
         //задаем путь к логу
         SetLogFile((string(LOG_DIR)+PROJ_NAME+".log").c_str());
         //задаем путь к PID-файлу
@@ -286,7 +282,6 @@ TDaemon::TDaemon(const char* ConfigName)
 }
 
 int TDaemon::WorkProc()
-
 {
     struct sigaction sigact;
     sigset_t         sigset;
@@ -322,7 +317,7 @@ int TDaemon::WorkProc()
     // Установим максимальное кол-во дискрипторов которое можно открыть
     SetFdLimit(FD_LIMIT);
     // запишем в лог, что наш демон стартовал
-    WriteLog("%s [DAEMON] Started\n", getTime());
+    //WriteLog("%s [DAEMON] Started\n", getTime());
     DaemonFunction();
         // цикл ожидания сообщений
         while(1)

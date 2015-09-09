@@ -24,11 +24,18 @@
 
 class TUSB_Daemon : public TDaemon{
     private:
+        unsigned int connects=1;
+        unsigned int port=2500;
 		std::thread *web_thr,*usb_thr;
     public:
         int DaemonFunction() final;
         int LoadConfig(const char*) final;
-        TUSB_Daemon(const char* ConfigName) : TDaemon(ConfigName){};
+        TUSB_Daemon(const char* ConfigName) : TDaemon(ConfigName)
+        {
+            //загружаем конфиг. Мы не могли этого сделать ранее, 
+            //так как функция - виртуальная
+            LoadConfig(ConfigName);
+        };
         ~TUSB_Daemon();
 };
 
